@@ -1,7 +1,12 @@
 package com.example.MavenServidor.controllers;
 
 import com.example.MavenServidor.domains.Tciudades;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import org.springframework.web.bind.annotation.*;
+
+import static com.example.MavenServidor.MavenServidorApplication.db;
 
 @RestController
 @RequestMapping("/")
@@ -12,7 +17,14 @@ public class CiudadesController {
         //return restFulService.list();
         //Retornar la lista de las ciudades
 
-        return "LISTA CIUDADES RESPUESTA";
+        DBCollection collection = db.getCollection("ciudades");
+        DBCursor dbo = collection.find();
+        while (dbo.hasNext()) {
+            DBObject obj = dbo.next();
+            System.out.println(obj);
+            //do your thing
+        }
+        return String.valueOf("-----------");
     }
 
     @RequestMapping( value = "/", method = RequestMethod.POST )
