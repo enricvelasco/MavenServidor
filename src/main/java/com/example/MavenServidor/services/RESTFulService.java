@@ -1,7 +1,13 @@
 package com.example.MavenServidor.services;
 
-public class RESTFulService {
-    String list(){
+import com.example.MavenServidor.domains.Post;
 
+public class RESTFulService {
+    public Iterable<Post> list(){
+        return list();
     }
+
+    /*public Object<Object> save(Object data){
+        return list();
+    }*/
 }

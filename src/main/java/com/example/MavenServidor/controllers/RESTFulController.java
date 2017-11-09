@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class RESTFulController {
 
-    private RESTFulService restFulService;
+    /*private RESTFulService restFulService;
 
     @Autowired
     public RESTFulController(RESTFulService restFulService){
@@ -18,17 +18,18 @@ public class RESTFulController {
 
         @RequestMapping( value = "/", method = RequestMethod.GET )
         public Iterable<Post> list(){
-            return restFulService.list();
+            //return restFulService.list();
+
         }
 
         @RequestMapping( value = "/", method = RequestMethod.POST )
         public Post create(@RequestBody Post post){
-            return restFulService.save(post);
+            //return restFulService.save(post);
         }
 
         @RequestMapping( value = "/{id}", method = RequestMethod.GET )
         public Post read(@PathVariable(value="id") long id){
-            return restFulService.getPost(id);
+            //return restFulService.getPost(id);
         }
 
         @RequestMapping( value = "/{id}", method = RequestMethod.PUT )
@@ -39,5 +40,5 @@ public class RESTFulController {
         @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
         public String delete(@PathVariable(value="id") int id){
             return "post.delete()";
-        }
+        }*/
 }

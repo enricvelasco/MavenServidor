@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@RestController
+//@RestController
 @RequestMapping("/posts")
 public class PostController {
 
@@ -18,7 +18,7 @@ public class PostController {
         this.postService = postService;
     }*/
 
-    @RequestMapping( value = "/", method = RequestMethod.GET )
+    /*@RequestMapping( value = "/", method = RequestMethod.GET )
     public Iterable<Post> list(){
         return postService.list();
     }
@@ -41,7 +41,7 @@ public class PostController {
     @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
     public String delete(@PathVariable(value="id") int id){
         return "post.delete()";
-    }
+    }*/
 
 
 }
