@@ -6,6 +6,7 @@ import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoDatabase;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -24,8 +25,9 @@ public class MavenServidorApplication {
         serv.startServer();*/
 
 
-        //MongoClient mongoClient= conectarBBDD();
-		//db = mongoClient.getDB("demografia"); //se conecta a la BBDD y si no la crea
+        MongoClient mongoClient= conectarBBDD();
+		//db = mongoClient.getDatabase("demografia"); //se conecta a la BBDD y si no la crea
+        MongoDatabase db = mongoClient.getDatabase("demografia");
 
 		/*CiudadesController ciudades = new CiudadesController();
 		System.out.println("EL LISTADO: "+ ciudades.list());*/
@@ -37,7 +39,7 @@ public class MavenServidorApplication {
 		String password = "user2"; // the password as a character array
 
 		MongoCredential credential = MongoCredential.createCredential(user, database, password.toCharArray());
-		MongoClient mongoClient = new MongoClient(new ServerAddress("192.168.1.135:27017", 27017), Arrays.asList(credential));
+		MongoClient mongoClient = new MongoClient(new ServerAddress("192.168.1.138:27017", 27017), Arrays.asList(credential));
 		System.out.println("conexion OK");
 		return mongoClient;
 	}
