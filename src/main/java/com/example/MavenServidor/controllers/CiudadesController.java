@@ -1,99 +1,39 @@
 package com.example.MavenServidor.controllers;
 
-import com.example.MavenServidor.domains.Tciudades;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import com.example.MavenServidor.services.CiudadesService;
 import org.springframework.web.bind.annotation.*;
-
-import static com.example.MavenServidor.MavenServidorApplication.db;
 
 @RestController
 @RequestMapping("/ciudades")
-public class CiudadesController {
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    @ResponseBody
-    public String list(){
-        System.out.println("ENTRA EN LIST-----------");
-        //return restFulService.list();
-        //Retornar la lista de las ciudades
-        //@RequestMapping( value = "/", method = RequestMethod.GET )
-        //DBCollection collection = db.getCollection("ciudades");
-        //DBCursor dbo = collection.find();
-        /*while (dbo.hasNext()) {
-            DBObject obj = dbo.next();
-            System.out.println(obj);
-            //do your thing
-        }*/
-        return String.valueOf("HOLA");
-    }
-    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    public String read(/*@PathVariable(value="_id") long id*/){
-        //return restFulService.getPost(id);
-        //retorna una ciudad conccreta
-        //Tciudades ciudadRespuesta = new Tciudades("ciudad retornada");
-        //return ciudadRespuesta;
-        return "ADIOS";
+public class CiudadesController extends RESTFulController{
+    private CiudadesService ciudadesService;
+    @Override
+    public String list() {
+        return super.list();
+        //return "ENTRA EN LIST--------*---";
     }
 
-    @RequestMapping( value = "/", method = RequestMethod.POST )
-    public String create(/*@RequestBody Tciudades ciudad*/){
-        //return restFulService.save(post);
-        //insetar en base de datos
-        return "creado";
+    @Override
+    public String read() {
+        return super.read();
+        //return "ENTRA EN READ---------*--";
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.PUT )
-    public String update(@PathVariable(value="id") int id){
-
-        return "post.update()";
+    @Override
+    public String create() {
+        return super.create();
+        //return "ENTRA EN CREATE--------*---";
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
-    public String delete(@PathVariable(value="id") int id){
-
-        return "post.delete()";
+    @Override
+    public String update() {
+        return super.update();
+        //return "ENTRA EN UPDATE---------*--";
     }
 
-    /*@RequestMapping( value = "/", method = RequestMethod.GET )
-    //public Iterable<Tciudades> list(){
-    public String list(){
-        //return restFulService.list();
-        //Retornar la lista de las ciudades
-
-        DBCollection collection = db.getCollection("ciudades");
-        DBCursor dbo = collection.find();
-        while (dbo.hasNext()) {
-            DBObject obj = dbo.next();
-            System.out.println(obj);
-            //do your thing
-        }
-        return String.valueOf("-----------");
+    @Override
+    public String delete() {
+        return super.delete();
+        //return "ENTRA EN DELETE---------*--";
     }
-
-    @RequestMapping( value = "/", method = RequestMethod.POST )
-    public Tciudades create(@RequestBody Tciudades ciudad){
-        //return restFulService.save(post);
-        //insetar en base de datos
-        return ciudad;
-    }
-
-    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    public Tciudades read(@PathVariable(value="id") long id){
-        //return restFulService.getPost(id);
-        //retorna una ciudad conccreta
-        Tciudades ciudadRespuesta = new Tciudades("ciudad retornada");
-        return ciudadRespuesta;
-    }
-
-    @RequestMapping( value = "/{id}", method = RequestMethod.PUT )
-    public String update(@PathVariable(value="id") int id){
-        return "post.update()";
-    }
-
-    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
-    public String delete(@PathVariable(value="id") int id){
-        return "post.delete()";
-    }*/
 }

@@ -24,8 +24,8 @@ public class MavenServidorApplication {
         serv.startServer();*/
 
 
-        MongoClient mongoClient= conectarBBDD();
-		db = mongoClient.getDB("demografia"); //se conecta a la BBDD y si no la crea
+        //MongoClient mongoClient= conectarBBDD();
+		//db = mongoClient.getDB("demografia"); //se conecta a la BBDD y si no la crea
 
 		/*CiudadesController ciudades = new CiudadesController();
 		System.out.println("EL LISTADO: "+ ciudades.list());*/
