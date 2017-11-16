@@ -8,11 +8,11 @@ import java.net.URL;
 public class MainClientPeticionsProva {
     public static void main(String[] args) {
         try {
-            System.out.println(getHTML("http://localhost:8080/ciudades/1"));
+            //System.out.println(getHTML("http://localhost:8080/ciudades/1"));
             System.out.println(getHTMLAllTable("http://localhost:8080/ciudades/"));
-            System.out.println(postHTML("http://localhost:8080/ciudades/"));
-            System.out.println(putHTML("http://localhost:8080/ciudades/1"));
-            System.out.println(deleteHTML("http://localhost:8080/ciudades/1"));
+            //System.out.println(postHTML("http://localhost:8080/ciudades/"));
+            //System.out.println(putHTML("http://localhost:8080/ciudades/1"));
+            //System.out.println(deleteHTML("http://localhost:8080/ciudades/1"));
         } catch (Exception e) {
             e.printStackTrace();
         }

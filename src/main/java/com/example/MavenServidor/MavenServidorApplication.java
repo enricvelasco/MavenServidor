@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 @SpringBootApplication
 public class MavenServidorApplication {
-	public static DB db;
+	public static MongoDatabase db;
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(MavenServidorApplication.class, args);
 
@@ -27,9 +27,9 @@ public class MavenServidorApplication {
 
         MongoClient mongoClient= conectarBBDD();
 		//db = mongoClient.getDatabase("demografia"); //se conecta a la BBDD y si no la crea
-        MongoDatabase db = mongoClient.getDatabase("demografia");
+        db = mongoClient.getDatabase("demografia");
 
-		/*CiudadesController ciudades = new CiudadesController();
+		/*CiudadesControlle r ciudades = new CiudadesController();
 		System.out.println("EL LISTADO: "+ ciudades.list());*/
 	}
 

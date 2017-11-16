@@ -1,5 +1,6 @@
 package com.example.MavenServidor.controllers;
 
+import com.example.MavenServidor.domains.Tciudades;
 import com.example.MavenServidor.services.CiudadesService;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,10 +8,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/ciudades")
 public class CiudadesController extends RESTFulController{
     private CiudadesService ciudadesService;
+    //private String tabla;
+    /*@Override
+    public String list(String dominio) {
+        return super.list();
+        //return "ENTRA EN LIST--------*---";
+    }*/
+    public CiudadesController(){
+        dominio = "Tciudades";
+    }
+
     @Override
     public String list() {
         return super.list();
-        //return "ENTRA EN LIST--------*---";
     }
 
     @Override

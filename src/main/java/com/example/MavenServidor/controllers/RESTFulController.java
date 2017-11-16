@@ -1,25 +1,37 @@
 package com.example.MavenServidor.controllers;
 
+import com.mongodb.BasicDBList;
+import com.mongodb.DBCollection;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.util.JSON;
+import org.bson.Document;
 import org.springframework.web.bind.annotation.*;
-@RequestMapping("/")
+
+import static com.example.MavenServidor.MavenServidorApplication.db;
+
+//@RequestMapping("/")
 public class RESTFulController {
+    protected String dominio;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
     public String list(){
-        System.out.println("ENTRA EN LIST-----------");
-        return "ENTRA EN LIST-----------";
-        //return restFulService.list();
-        //Retornar la lista de las ciudades
-        //@RequestMapping( value = "/", method = RequestMethod.GET )
-        //DBCollection collection = db.getCollection("ciudades");
-        //DBCursor dbo = collection.find();
-        /*while (dbo.hasNext()) {
-            DBObject obj = dbo.next();
-            System.out.println(obj);
-            //do your thing
-        }*/
-        //return String.valueOf("HOLA");
+        MongoCollection<Document> collection = db.getCollection(dominio);
+
+        MongoCursor<Document> iterator = collection.find().iterator();
+
+        BasicDBList list = new BasicDBList();
+        while (iterator.hasNext()) {
+            Document doc = iterator.next();
+            list.add(doc);
+        }
+        System.out.println(JSON.serialize(list));
+
+        return JSON.serialize(list);
     }
+
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
     public String read(/*@PathVariable(value="_id") long id*/){
         return "ENTRA EN READ-----------";
