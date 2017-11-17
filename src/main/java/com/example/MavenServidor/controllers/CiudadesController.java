@@ -19,12 +19,16 @@ public class CiudadesController extends RESTFulController{
     }
 
     @Override
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @ResponseBody
     public String list() {
         return super.list();
     }
 
     @Override
-    public String read(String id) {
+    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
+    @ResponseBody
+    public String read(@PathVariable("id") String id) {
         return super.read(id);
     }
 

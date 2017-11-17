@@ -10,13 +10,14 @@ import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.MavenServidor.MavenServidorApplication.db;
+import static com.mongodb.client.model.Filters.eq;
 
 //@RequestMapping("/")
 public class RESTFulController {
     protected String dominio;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    @ResponseBody
+    //@RequestMapping(value = "/", method = RequestMethod.GET)
+    //@ResponseBody
     public String list(){
         MongoCollection<Document> collection = db.getCollection(dominio);
 
@@ -32,37 +33,13 @@ public class RESTFulController {
         return JSON.serialize(list);
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    public String read(@PathVariable(value="_id") String id){
+   //@RequestMapping( value = "/{id}", method = RequestMethod.GET )
+    public String read(/*@PathVariable(value="_id")*/ String id){
         MongoCollection<Document>  collection = db.getCollection(dominio);
+        System.out.println("EL ID QUE ENTRA ES: "+id);
+        Document myDoc = collection.find(eq("_id", new ObjectId(id))).first();
 
-        /*BasicDBObject searchObject = new BasicDBObject();
-        searchObject.put("name", "Barcelona");
-        FindIterable<Document> resultSubset = collection.find(searchObject);*/
-
-        BasicDBObject query = new BasicDBObject();
-        query.put("_id", new ObjectId(id));
-        FindIterable<Document> resultSubset = collection.find();
-
-        //Document resultSubset = collection.find(eq("_id", new ObjectId(id))).first();
-
-        /*while(resultSubset.hasNext()){
-            System.out.println(resultSubset.next());*/
-
-        //BasicDBObject query=new BasicDBObject("_id",new ObjectId(id));
-        //FindIterable<Document> cursor = collection.find();
-        //DBObject query = new BasicDBObject();
-        //query.put("_id", new ObjectId(id));
-
-        //Object cursor = collection.find(query);
-
-        return JSON.serialize(resultSubset);
-        //return String.valueOf(resultSubset);
-        //return restFulService.getPost(id);
-        //retorna una ciudad conccreta
-        //Tciudades ciudadRespuesta = new Tciudades("ciudad retornada");
-        //return ciudadRespuesta;
-        //return "ADIOS";
+        return JSON.serialize(myDoc);
     }
 
     @RequestMapping( value = "/", method = RequestMethod.POST )
