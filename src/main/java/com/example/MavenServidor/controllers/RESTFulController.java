@@ -1,12 +1,12 @@
 package com.example.MavenServidor.controllers;
 
-import com.mongodb.BasicDBList;
-import com.mongodb.DBCollection;
+import com.mongodb.*;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.util.JSON;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.MavenServidor.MavenServidorApplication.db;
@@ -33,8 +33,31 @@ public class RESTFulController {
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    public String read(/*@PathVariable(value="_id") long id*/){
-        return "ENTRA EN READ-----------";
+    public String read(@PathVariable(value="_id") String id){
+        MongoCollection<Document>  collection = db.getCollection(dominio);
+
+        /*BasicDBObject searchObject = new BasicDBObject();
+        searchObject.put("name", "Barcelona");
+        FindIterable<Document> resultSubset = collection.find(searchObject);*/
+
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", new ObjectId(id));
+        FindIterable<Document> resultSubset = collection.find();
+
+        //Document resultSubset = collection.find(eq("_id", new ObjectId(id))).first();
+
+        /*while(resultSubset.hasNext()){
+            System.out.println(resultSubset.next());*/
+
+        //BasicDBObject query=new BasicDBObject("_id",new ObjectId(id));
+        //FindIterable<Document> cursor = collection.find();
+        //DBObject query = new BasicDBObject();
+        //query.put("_id", new ObjectId(id));
+
+        //Object cursor = collection.find(query);
+
+        return JSON.serialize(resultSubset);
+        //return String.valueOf(resultSubset);
         //return restFulService.getPost(id);
         //retorna una ciudad conccreta
         //Tciudades ciudadRespuesta = new Tciudades("ciudad retornada");

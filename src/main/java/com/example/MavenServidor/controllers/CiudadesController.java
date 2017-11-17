@@ -24,10 +24,15 @@ public class CiudadesController extends RESTFulController{
     }
 
     @Override
+    public String read(String id) {
+        return super.read(id);
+    }
+
+    /*@Override
     public String read() {
         return super.read();
         //return "ENTRA EN READ---------*--";
-    }
+    }*/
 
     @Override
     public String create() {

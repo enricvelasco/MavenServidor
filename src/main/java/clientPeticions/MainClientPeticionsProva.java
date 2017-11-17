@@ -10,6 +10,7 @@ public class MainClientPeticionsProva {
         try {
             //System.out.println(getHTML("http://localhost:8080/ciudades/1"));
             System.out.println(getHTMLAllTable("http://localhost:8080/ciudades/"));
+            System.out.println(getHTML("http://localhost:8080/ciudades/5a0de3c6bcfd37a42145ca8b"));
             //System.out.println(postHTML("http://localhost:8080/ciudades/"));
             //System.out.println(putHTML("http://localhost:8080/ciudades/1"));
             //System.out.println(deleteHTML("http://localhost:8080/ciudades/1"));
