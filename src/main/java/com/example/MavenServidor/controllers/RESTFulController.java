@@ -42,9 +42,10 @@ public class RESTFulController {
         return JSON.serialize(myDoc);
     }
 
-    @RequestMapping( value = "/", method = RequestMethod.POST )
-    public String create(/*@RequestBody Tciudades ciudad*/){
-        return "ENTRA EN CREATE-----------";
+    //@RequestMapping( value = "/", method = RequestMethod.POST )
+    public String create(/*@RequestBody*/ String jsonObject){
+        System.out.println("ENTRA EN CREATE "+jsonObject);
+        return "CREATE-----------"+jsonObject;
         //return restFulService.save(post);
         //insetar en base de datos
         //return "creado";

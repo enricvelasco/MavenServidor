@@ -38,10 +38,16 @@ public class CiudadesController extends RESTFulController{
         //return "ENTRA EN READ---------*--";
     }*/
 
-    @Override
+    /*@Override
     public String create() {
         return super.create();
         //return "ENTRA EN CREATE--------*---";
+    }*/
+
+    @Override
+    @RequestMapping( value = "/", method = RequestMethod.POST )
+    public String create(@RequestBody String jsonObject) {
+        return super.create(jsonObject);
     }
 
     @Override
