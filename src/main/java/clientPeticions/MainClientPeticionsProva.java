@@ -1,12 +1,12 @@
 package clientPeticions;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import net.minidev.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class MainClientPeticionsProva {
     public static void main(String[] args) {
@@ -51,18 +51,42 @@ public class MainClientPeticionsProva {
     }
 
     private static String postHTML(String urlToRead) throws Exception{
+
+        /*String urlParameters  = "param1=a&param2=b&param3=c";
+        byte[] postData       = urlParameters.getBytes( StandardCharsets.UTF_8 );
+        int    postDataLength = postData.length;
+        //String request        = "http://example.com/index.php";
+        URL    url            = new URL( urlToRead );
+        HttpURLConnection conn= (HttpURLConnection) url.openConnection();
+        conn.setDoOutput( true );
+        conn.setInstanceFollowRedirects( false );
+        conn.setRequestMethod( "POST" );
+        conn.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
+        conn.setRequestProperty( "charset", "utf-8");
+        conn.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
+        conn.setUseCaches( false );
+        try( DataOutputStream wr = new DataOutputStream( conn.getOutputStream())) {
+            wr.write( postData );
+        }
+
+        return "RESULTADO";*/
+
         StringBuilder result = new StringBuilder();
         URL url = new URL(urlToRead);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
-        String urlParameters = "A"/*new JSONObject("{\"phonetype\":\"N95\",\"cat\":\"WP\"}")*/;
+        String urlParameters = "{'name':'prueba'}";
         // Send post request
         conn.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-        wr.writeBytes(urlParameters);
+        /*DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+        wr.writeBytes(urlParameters);//%7B%22name%22%3A%22prueba%22%7D=
         wr.flush();
+        wr.close();*/
+        DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(wr, "UTF-8"));
+        writer.write(urlParameters);
+        writer.close();
         wr.close();
-
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(conn.getInputStream()));

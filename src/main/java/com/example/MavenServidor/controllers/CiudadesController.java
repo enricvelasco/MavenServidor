@@ -2,6 +2,7 @@ package com.example.MavenServidor.controllers;
 
 import com.example.MavenServidor.domains.Tciudades;
 import com.example.MavenServidor.services.CiudadesService;
+import net.minidev.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,6 +44,8 @@ public class CiudadesController extends RESTFulController{
         return super.create();
         //return "ENTRA EN CREATE--------*---";
     }*/
+
+
 
     @Override
     @RequestMapping( value = "/", method = RequestMethod.POST )

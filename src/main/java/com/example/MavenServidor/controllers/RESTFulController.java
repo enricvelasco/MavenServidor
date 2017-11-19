@@ -5,9 +5,15 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.util.JSON;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+import net.minidev.json.parser.ParseException;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.charset.Charset;
+import java.util.Arrays;
 
 import static com.example.MavenServidor.MavenServidorApplication.db;
 import static com.mongodb.client.model.Filters.eq;
@@ -44,7 +50,13 @@ public class RESTFulController {
 
     //@RequestMapping( value = "/", method = RequestMethod.POST )
     public String create(/*@RequestBody*/ String jsonObject){
-        System.out.println("ENTRA EN CREATE "+jsonObject);
+        System.out.println("ENTRA EN CREATE "+ jsonObject);
+        //JSONObject jsonObj = new JSONObject(jsonObject);Charset.forName("UTF-8").encode(json)
+
+
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("name", "prueba");
+
         return "CREATE-----------"+jsonObject;
         //return restFulService.save(post);
         //insetar en base de datos
