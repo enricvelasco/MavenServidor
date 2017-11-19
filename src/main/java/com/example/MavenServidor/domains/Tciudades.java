@@ -7,6 +7,9 @@ public class Tciudades {
         this.name = name;
     }
 
+    public Tciudades() {
+    }
+
     public String getName() {
         return name;
     }

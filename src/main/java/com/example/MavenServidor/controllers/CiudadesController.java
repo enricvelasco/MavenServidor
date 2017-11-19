@@ -1,7 +1,7 @@
 package com.example.MavenServidor.controllers;
 
-import com.example.MavenServidor.domains.Tciudades;
 import com.example.MavenServidor.services.CiudadesService;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,14 +22,14 @@ public class CiudadesController extends RESTFulController{
     @Override
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
-    public String list() {
+    public JSONArray list() {
         return super.list();
     }
 
     @Override
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
     @ResponseBody
-    public String read(@PathVariable("id") String id) {
+    public JSONObject read(@PathVariable("id") String id) {
         return super.read(id);
     }
 
