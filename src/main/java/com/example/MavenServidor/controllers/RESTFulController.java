@@ -1,5 +1,6 @@
 package com.example.MavenServidor.controllers;
 
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -77,23 +78,37 @@ public class RESTFulController {
     }
 
     //@RequestMapping( value = "/", method = RequestMethod.POST )
-    public String create(/*@RequestBody*/ String jsonObject){
+    public JSONObject create(/*@RequestBody*/ String jsonObject){
         System.out.println("ENTRA EN CREATE "+ jsonObject);
         //JSONObject jsonObj = new JSONObject(jsonObject);Charset.forName("UTF-8").encode(json)
+        //DBCollection collection = (DBCollection) db.getCollection(dominio);
+        MongoCollection<Document> collection = db.getCollection(dominio);
+        Document doc = Document.parse(jsonObject);
+        //DBObject dbObject = (DBObject)JSON.parse(jsonObject);;
 
+        collection.insertOne(doc);
 
-        JSONObject jsonObj = new JSONObject();
-        jsonObj.put("name", "prueba");
-
-        return "CREATE-----------"+jsonObject;
-        //return restFulService.save(post);
-        //insetar en base de datos
-        //return "creado";
+        JSONObject resp = new JSONObject();
+        resp.put("error", "objeto creado correctamente");
+        return resp;
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.PUT )
-    public String update(/*@PathVariable(value="id") int id*/){
-        return "ENTRA EN UPDATE-----------";
+    //@RequestMapping( value = "/{id}", method = RequestMethod.PUT )
+    public JSONObject update(String jsonObject){
+        System.out.println("ENTRA A UPDATE");
+        Document doc = Document.parse(jsonObject);
+
+        //JSONObject jsonGet = read(doc.get("id").toString());
+        //Document docGet = Document.parse(String.valueOf(jsonGet));
+
+        MongoCollection<Document>  collection = db.getCollection(dominio);
+        //collection.update(searchQuery, newDocument);
+        //collection.updateOne(docGet, doc);
+        collection.updateOne(eq("_id", doc.get("id").toString()), new Document("$set", new Document("population", doc.get("population").toString())));
+
+        JSONObject resp = new JSONObject();
+        resp.put("error", "objeto creado correctamente");
+        return resp;
 
         //return "post.update()";
     }

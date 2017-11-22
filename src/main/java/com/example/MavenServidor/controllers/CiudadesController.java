@@ -49,13 +49,14 @@ public class CiudadesController extends RESTFulController{
 
     @Override
     @RequestMapping( value = "/", method = RequestMethod.POST )
-    public String create(@RequestBody String jsonObject) {
+    public JSONObject create(@RequestBody String jsonObject) {
         return super.create(jsonObject);
     }
 
     @Override
-    public String update() {
-        return super.update();
+    @RequestMapping( value = "/{id}", method = RequestMethod.PUT )
+    public JSONObject update(@RequestBody String jsonObject) {
+        return super.update(jsonObject);
         //return "ENTRA EN UPDATE---------*--";
     }
 
