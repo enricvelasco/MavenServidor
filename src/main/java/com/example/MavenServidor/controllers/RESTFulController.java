@@ -1,9 +1,11 @@
 package com.example.MavenServidor.controllers;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.result.UpdateResult;
 import com.mongodb.util.JSON;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -104,7 +106,13 @@ public class RESTFulController {
         MongoCollection<Document>  collection = db.getCollection(dominio);
         //collection.update(searchQuery, newDocument);
         //collection.updateOne(docGet, doc);
-        collection.updateOne(eq("_id", doc.get("id").toString()), new Document("$set", new Document("population", doc.get("population").toString())));
+        //collection.updateOne(eq("_id", doc.get("id").toString()), new Document("$set", new Document("population", doc.get("population").toString())));
+        //collection.updateOne(new BasicDBObject("_id", "5a11c68e36642eef8121ad7e"),new BasicDBObject("$set", new BasicDBObject("population", "4000")));
+        //collection.updateOne({ "name" , "Central Perk Cafe" },{ $set: { "violations" , 3 } });
+
+        //collection.updateOne({ "name" , "Central Perk Cafe" });
+        UpdateResult updateResult = collection.updateOne(eq("_id", new ObjectId("5a11c68e36642eef8121ad7e")),new Document("$set", new Document("population", 5000)));
+        System.out.println("Number of record updated:- " + updateResult.getModifiedCount());
 
         JSONObject resp = new JSONObject();
         resp.put("error", "objeto creado correctamente");

@@ -39,7 +39,7 @@ public class MavenServidorApplication {
 		String password = "user2"; // the password as a character array
 
 		MongoCredential credential = MongoCredential.createCredential(user, database, password.toCharArray());
-		MongoClient mongoClient = new MongoClient(new ServerAddress("192.168.1.133:27017", 27017), Arrays.asList(credential));
+		MongoClient mongoClient = new MongoClient(new ServerAddress("192.168.1.135:27017", 27017), Arrays.asList(credential));
 		System.out.println("conexion OK");
 		return mongoClient;
 	}
