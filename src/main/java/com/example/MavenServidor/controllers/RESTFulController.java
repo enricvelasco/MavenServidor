@@ -100,25 +100,25 @@ public class RESTFulController {
         System.out.println("ENTRA A UPDATE");
         Document doc = Document.parse(jsonObject);
 
-        //JSONObject jsonGet = read(doc.get("id").toString());
-        //Document docGet = Document.parse(String.valueOf(jsonGet));
-
         MongoCollection<Document>  collection = db.getCollection(dominio);
-        //collection.update(searchQuery, newDocument);
-        //collection.updateOne(docGet, doc);
-        //collection.updateOne(eq("_id", doc.get("id").toString()), new Document("$set", new Document("population", doc.get("population").toString())));
-        //collection.updateOne(new BasicDBObject("_id", "5a11c68e36642eef8121ad7e"),new BasicDBObject("$set", new BasicDBObject("population", "4000")));
-        //collection.updateOne({ "name" , "Central Perk Cafe" },{ $set: { "violations" , 3 } });
 
-        //collection.updateOne({ "name" , "Central Perk Cafe" });
-        UpdateResult updateResult = collection.updateOne(eq("_id", new ObjectId("5a11c68e36642eef8121ad7e")),new Document("$set", new Document("population", 5000)));
-        System.out.println("Number of record updated:- " + updateResult.getModifiedCount());
+        String idElemento = doc.get("id").toString();
+
+        Document objUpdate = new Document();
+        for(String key : doc.keySet()){
+            if(!key.equals("id")){
+                System.out.println("KEY A INSERTAR" + key);
+                objUpdate.put(key,doc.get(key));
+            }
+        }
+
+        UpdateResult updateResult = collection.updateOne(eq("_id", new ObjectId(idElemento)),new Document("$set", objUpdate));
 
         JSONObject resp = new JSONObject();
         resp.put("error", "objeto creado correctamente");
-        return resp;
+        resp.put("numActualizados", updateResult);
 
-        //return "post.update()";
+        return resp;
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
