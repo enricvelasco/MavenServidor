@@ -61,8 +61,9 @@ public class CiudadesController extends RESTFulController{
     }
 
     @Override
-    public String delete() {
-        return super.delete();
+    @RequestMapping( value = "/", method = RequestMethod.DELETE )
+    public String delete(@RequestBody String jsonObject) {
+        return super.delete(jsonObject);
         //return "ENTRA EN DELETE---------*--";
     }
 }

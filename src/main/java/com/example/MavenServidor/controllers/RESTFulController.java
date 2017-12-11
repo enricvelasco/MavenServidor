@@ -11,6 +11,7 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.MavenServidor.MavenServidorApplication.db;
@@ -96,14 +97,25 @@ public class RESTFulController {
     }
 
     //@RequestMapping( value = "/{id}", method = RequestMethod.PUT )
+    @Transactional
     public JSONObject update(String jsonObject){
         System.out.println("ENTRA A UPDATE");
+        JSONObject resp = new JSONObject();
         Document doc = Document.parse(jsonObject);
 
-        MongoCollection<Document>  collection = db.getCollection(dominio);
 
+        MongoCollection<Document>  collection = db.getCollection(dominio);
         String idElemento = doc.get("id").toString();
 
+        System.out.println("-------UPDATE SIMPLE");
+        UpdateResult updateResult = actualizarRegistro(idElemento, collection, doc);
+        resp.put("error", "objeto creado correctamente");
+        resp.put("numActualizados", updateResult);
+
+        return resp;
+    }
+
+    public UpdateResult actualizarRegistro(String idElemento, MongoCollection<Document>  collection, Document doc){
         Document objUpdate = new Document();
         for(String key : doc.keySet()){
             if(!key.equals("id")){
@@ -111,20 +123,17 @@ public class RESTFulController {
                 objUpdate.put(key,doc.get(key));
             }
         }
-
         UpdateResult updateResult = collection.updateOne(eq("_id", new ObjectId(idElemento)),new Document("$set", objUpdate));
-
-        JSONObject resp = new JSONObject();
-        resp.put("error", "objeto creado correctamente");
-        resp.put("numActualizados", updateResult);
-
-        return resp;
+        return updateResult;
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
-    public String delete(/*@PathVariable(value="id") int id*/){
-        return "ENTRA EN DELETE-----------";
-
+    //@RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
+    public String delete(String jsonObject){
+        Document doc = Document.parse(jsonObject);
+        MongoCollection<Document>  collection = db.getCollection(dominio);
+        collection.deleteOne(eq("_id", new ObjectId(doc.get("id").toString())));
         //return "post.delete()";
+
+        return "ENTRA EN DELETE-----------";
     }
 }
