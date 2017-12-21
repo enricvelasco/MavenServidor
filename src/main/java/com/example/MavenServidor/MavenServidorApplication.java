@@ -1,8 +1,5 @@
 package com.example.MavenServidor;
 
-import com.example.MavenServidor.controllers.CiudadesController;
-import com.example.MavenServidor.estructura.Servidor;
-import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
@@ -39,7 +36,7 @@ public class MavenServidorApplication {
 		String password = "user2"; // the password as a character array
 
 		MongoCredential credential = MongoCredential.createCredential(user, database, password.toCharArray());
-		MongoClient mongoClient = new MongoClient(new ServerAddress("192.168.1.135:27017", 27017), Arrays.asList(credential));
+		MongoClient mongoClient = new MongoClient(new ServerAddress("192.168.1.137:27017", 27017), Arrays.asList(credential));
 		System.out.println("conexion OK");
 		return mongoClient;
 	}
