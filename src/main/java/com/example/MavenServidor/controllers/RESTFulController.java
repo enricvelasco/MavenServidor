@@ -1,5 +1,6 @@
 package com.example.MavenServidor.controllers;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.result.UpdateResult;
@@ -20,12 +21,16 @@ public class RESTFulController {
     public JSONArray list(String query){
         System.out.println("LA QUERY QUE LLEGA "+query);
         Document jsonQuery = Document.parse(query);
+
+        //{"name" : {"$ne", "Barcelona"}}
+        BasicDBObject andQuery = new BasicDBObject("name", "Barcelona");
+
         MongoCollection<Document> collection = db.getCollection(dominio);
-        Document myDoc = collection.find(jsonQuery).first();
+        Document myDoc = collection.find().first();
         Set<String> keys = myDoc.keySet();
         System.out.println("KEYS DEL ELEMENTO"+ keys);
 
-        MongoCursor<Document> iterator = collection.find().iterator();
+        MongoCursor<Document> iterator = collection.find(jsonQuery).iterator();
         JSONArray list = new JSONArray();
         while (iterator.hasNext()) {
             Document doc = iterator.next();
