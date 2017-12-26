@@ -2,9 +2,13 @@ package com.example.MavenServidor.controllers.ciudades;
 
 import com.example.MavenServidor.controllers.RESTFulController;
 import com.example.MavenServidor.services.CiudadesService;
+import com.mongodb.client.FindIterable;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import net.minidev.json.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/ciudades")
@@ -17,7 +21,7 @@ public class CiudadesController extends RESTFulController {
     @Override
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
-    public JSONArray list(@RequestParam(value = "query") String query) {
+    public FindIterable list(@RequestParam(value = "query") String query){
         return super.list(query);
     }
 
