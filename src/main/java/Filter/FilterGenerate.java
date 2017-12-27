@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class FilterGenerate {
-    Bson filterIn;
+    Bson filtroGenerado;
 
     public FilterGenerate(String strFiltro) {
         String json = "[{'fieldName':'name', 'operator':'$in', 'valueInList':'[Barcelona, Valencia]'}]";
@@ -36,10 +36,10 @@ public class FilterGenerate {
                     System.out.println("KEY: "+key);
                     System.out.println("VALOR: "+jsonObject.get(key));
                     if(key.equals("valueInList")){
-
+                        //JSONArray valoresList = (JSONArray) jsonParser.parse(json);
                     }
                     if(key.equals("$if")){
-                        //this.filterIn = Filters.in(jsonObject.get("name"), jsonObject.get("valueInList"))
+                        //this.filtroGenerado = Filters.in(jsonObject.get("name"), jsonObject.get("valueInList"))
                     }
                 }
             }
@@ -66,7 +66,8 @@ public class FilterGenerate {
 
     }
 
-    public Bson getFilterIn() {
-        return filterIn;
+    public Bson getFiltroGenerado() {
+        return filtroGenerado;
     }
+
 }
