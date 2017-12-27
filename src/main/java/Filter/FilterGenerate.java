@@ -11,6 +11,7 @@ import net.minidev.json.parser.ParseException;
 import org.bson.conversions.Bson;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +20,7 @@ public class FilterGenerate {
     Bson filtroGenerado;
 
     public FilterGenerate(String strFiltro) {
-        String json = "[{'fieldName':'name', 'operator':'$in', 'valueInList':'[Barcelona, Valencia]'}]";
+        //String json = "[{'fieldName':'name', 'operator':'$in', 'valueInList':['Barcelona', 'Valencia', 'Madrid']}]";
         //ObjectMapper mapper = new ObjectMapper();
         //Map<String, Object> map = new HashMap<String, Object>();
         //String json = "{\"name\":\"Barcelona\"}";
@@ -27,8 +28,10 @@ public class FilterGenerate {
 
         try {
             JSONParser jsonParser=new JSONParser();
-            JSONArray jsonArray = (JSONArray) jsonParser.parse(json);
-            System.out.println("JSON ARRAY FILtER: "+jsonArray);
+            JSONArray jsonArray = (JSONArray) jsonParser.parse(strFiltro);
+            //System.out.println("JSON ARRAY FILtER: "+jsonArray);
+
+            ArrayList<String>  valoresList = new ArrayList<>();
             for (Object object : jsonArray){
                 JSONObject jsonObject = (JSONObject) object;
                 Set<String> keys = jsonObject.keySet();
@@ -36,11 +39,37 @@ public class FilterGenerate {
                     System.out.println("KEY: "+key);
                     System.out.println("VALOR: "+jsonObject.get(key));
                     if(key.equals("valueInList")){
-                        //JSONArray valoresList = (JSONArray) jsonParser.parse(json);
+                        ArrayList<String> valoresObjList = (ArrayList<String>) jsonObject.get("valueInList");
+                        for(String valor:valoresObjList){
+                            valoresList.add(valor);
+                        }
+
+                        String condition = jsonObject.get("operator").toString();
+                        if(condition.equals("$in")){
+                            //Coincide con cualquiera de los valores especificados en una matriz.
+                            //System.out.println("KEY PARA MONTAR"+jsonObject.get("name").toString());
+                            this.filtroGenerado = Filters.in(jsonObject.get("fieldName").toString(), valoresObjList);
+                            System.out.println("FILTRO GENERADO OBJ: "+this.filtroGenerado.toString());
+                        }else if(key.equals("$eq")){
+                            //Coincide con valores que son iguales a un valor especificado.
+                        }else if(key.equals("$gt")){
+                            //Coincide con valores que son mayores que un valor especificado.
+                        }else if(key.equals("$gte")){
+                            //Coincide con valores que son mayores o iguales a un valor especificado.
+                        }else if(key.equals("$lt")){
+                            //Coincide con valores que son menores que un valor especificado.
+                        }else if(key.equals("$lte")){
+                            //Coincide con los valores que son menores o iguales que un valor especificado.
+                        }else if(key.equals("$ne")){
+                            //Coincide con todos los valores que no son iguales a un valor especificado.
+                        }else if(key.equals("$nin")){
+                            //No coincide con ninguno de los valores especificados en una matriz.
+                        }
+
+                    }else if(key.equals("value")){
+
                     }
-                    if(key.equals("$if")){
-                        //this.filtroGenerado = Filters.in(jsonObject.get("name"), jsonObject.get("valueInList"))
-                    }
+
                 }
             }
         } catch (ParseException e) {
