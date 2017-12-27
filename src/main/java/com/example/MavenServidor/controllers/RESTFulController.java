@@ -16,6 +16,7 @@ import net.minidev.json.parser.ParseException;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.transaction.annotation.Transactional;
 import static com.example.MavenServidor.MavenServidorApplication.db;
 import static com.mongodb.client.model.Filters.eq;
@@ -64,7 +65,9 @@ public class RESTFulController {
     public JSONObject create(String jsonObject){
         System.out.println("ENTRA EN CREATE "+ jsonObject);
         JSONObject resp = new JSONObject();
+
         try {
+            List<Document> list = new ArrayList<>();
             MongoCollection<Document> collection = db.getCollection(dominio);
             JSONParser jsonParser=new JSONParser();
             JSONArray jsonArray = (JSONArray) jsonParser.parse(jsonObject);
@@ -72,9 +75,11 @@ public class RESTFulController {
             for(Object object:jsonArray){
                 System.out.println("EL OBJETO INSERTAR: "+object);
                 Document doc = Document.parse(object.toString());
-                collection.insertOne(doc);
+                list.add(doc);
+                //collection.insertOne(doc);
                 cont++;
             }
+            collection.insertMany(list);
             //Document doc = Document.parse(jsonObject);
             resp.put("error", "objeto creado correctamente");
             resp.put("insertados", cont);
