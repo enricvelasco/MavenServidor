@@ -8,8 +8,11 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.UpdateResult;
 import com.mongodb.util.JSON;
+
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+import net.minidev.json.parser.ParseException;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -26,40 +29,19 @@ public class RESTFulController {
     protected String dominio;
 
     @Transactional
-    public FindIterable list(String query){
+    public JSONArray list(String query){
         System.out.println("LA QUERY QUE LLEGA "+query);
         MongoCollection<Document> collection = db.getCollection(dominio);
 
-        Bson filter = montarFiltro(query);
-        FindIterable<Document> resultDocument = (filter == null) ?  collection.find() :  collection.find(filter);
-
+        FilterGenerate filter = new FilterGenerate(query);
+        FindIterable<Document> resultDocument = (filter.getFiltroGenerado() == null) ?  collection.find() :  collection.find(filter.getFiltroGenerado());
+        JSONArray list = new JSONArray();
         for(Document doc : resultDocument) {
             System.out.println("EL DOCUMENTO: "+doc.toJson());
-        }
-
-        /*MongoCursor<Document> iterator = (MongoCursor<Document>) resultDocument;
-        JSONArray list = new JSONArray();
-        while (iterator.hasNext()) {
-            Document doc = iterator.next();
             JSONObject jsonObj = read(doc.get( "_id" ).toString());
             list.add(jsonObj);
         }
-        System.out.println(JSON.serialize(list));*/
-        //return list;
-        return resultDocument;
-    }
-
-    private Bson montarFiltro(String query){
-        //Bson filter = null;
-        System.out.println("QUERY STRING: "+query);
-        FilterGenerate fil = new FilterGenerate(query);
-        System.out.println("EL FILTRO GENERADO: "+fil.getFiltroGenerado());
-        ArrayList<String> a1= new ArrayList<>();
-        a1.add("Barcelona");
-        a1.add("Valencia");
-        Bson filter = Filters.in("name", a1);
-        System.out.println("EL FILTRO BSON ES "+filter.toString());
-        return fil.getFiltroGenerado();
+        return list;
     }
 
     @Transactional
@@ -81,11 +63,25 @@ public class RESTFulController {
     @Transactional
     public JSONObject create(String jsonObject){
         System.out.println("ENTRA EN CREATE "+ jsonObject);
-        MongoCollection<Document> collection = db.getCollection(dominio);
-        Document doc = Document.parse(jsonObject);
-        collection.insertOne(doc);
         JSONObject resp = new JSONObject();
-        resp.put("error", "objeto creado correctamente");
+        try {
+            MongoCollection<Document> collection = db.getCollection(dominio);
+            JSONParser jsonParser=new JSONParser();
+            JSONArray jsonArray = (JSONArray) jsonParser.parse(jsonObject);
+            int cont = 0;
+            for(Object object:jsonArray){
+                System.out.println("EL OBJETO INSERTAR: "+object);
+                Document doc = Document.parse(object.toString());
+                collection.insertOne(doc);
+                cont++;
+            }
+            //Document doc = Document.parse(jsonObject);
+            resp.put("error", "objeto creado correctamente");
+            resp.put("insertados", cont);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            resp.put("error", e);
+        }
         return resp;
     }
 

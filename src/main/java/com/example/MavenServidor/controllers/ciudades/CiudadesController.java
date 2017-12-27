@@ -21,7 +21,7 @@ public class CiudadesController extends RESTFulController {
     @Override
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
-    public FindIterable list(@RequestParam(value = "query") String query){
+    public JSONArray list(@RequestParam(value = "query") String query){
         return super.list(query);
     }
 

@@ -21,11 +21,6 @@ public class FilterGenerate {
 
     public FilterGenerate(String strFiltro) {
         //String json = "[{'fieldName':'name', 'operator':'$in', 'valueInList':['Barcelona', 'Valencia', 'Madrid']}]";
-        //ObjectMapper mapper = new ObjectMapper();
-        //Map<String, Object> map = new HashMap<String, Object>();
-        //String json = "{\"name\":\"Barcelona\"}";
-        //JSONArray array = (JSONArray) JSON.parse(json);
-
         try {
             JSONParser jsonParser=new JSONParser();
             JSONArray jsonArray = (JSONArray) jsonParser.parse(strFiltro);
@@ -43,31 +38,28 @@ public class FilterGenerate {
                         for(String valor:valoresObjList){
                             valoresList.add(valor);
                         }
-
-                        String condition = jsonObject.get("operator").toString();
-                        if(condition.equals("$in")){
-                            //Coincide con cualquiera de los valores especificados en una matriz.
-                            //System.out.println("KEY PARA MONTAR"+jsonObject.get("name").toString());
-                            this.filtroGenerado = Filters.in(jsonObject.get("fieldName").toString(), valoresObjList);
-                            System.out.println("FILTRO GENERADO OBJ: "+this.filtroGenerado.toString());
-                        }else if(key.equals("$eq")){
-                            //Coincide con valores que son iguales a un valor especificado.
-                        }else if(key.equals("$gt")){
-                            //Coincide con valores que son mayores que un valor especificado.
-                        }else if(key.equals("$gte")){
-                            //Coincide con valores que son mayores o iguales a un valor especificado.
-                        }else if(key.equals("$lt")){
-                            //Coincide con valores que son menores que un valor especificado.
-                        }else if(key.equals("$lte")){
-                            //Coincide con los valores que son menores o iguales que un valor especificado.
-                        }else if(key.equals("$ne")){
-                            //Coincide con todos los valores que no son iguales a un valor especificado.
-                        }else if(key.equals("$nin")){
-                            //No coincide con ninguno de los valores especificados en una matriz.
-                        }
-
                     }else if(key.equals("value")){
 
+                    }
+
+                    String condition = jsonObject.get("operator").toString();
+                    if(condition.equals("$in")){
+                        //Coincide con cualquiera de los valores especificados en una matriz.
+                        this.filtroGenerado = Filters.in(jsonObject.get("fieldName").toString(), valoresList);
+                    }else if(condition.equals("$eq")){
+                        //Coincide con valores que son iguales a un valor especificado.
+                    }else if(condition.equals("$gt")){
+                        //Coincide con valores que son mayores que un valor especificado.
+                    }else if(condition.equals("$gte")){
+                        //Coincide con valores que son mayores o iguales a un valor especificado.
+                    }else if(condition.equals("$lt")){
+                        //Coincide con valores que son menores que un valor especificado.
+                    }else if(condition.equals("$lte")){
+                        //Coincide con los valores que son menores o iguales que un valor especificado.
+                    }else if(condition.equals("$ne")){
+                        //Coincide con todos los valores que no son iguales a un valor especificado.
+                    }else if(condition.equals("$nin")){
+                        //No coincide con ninguno de los valores especificados en una matriz.
                     }
 
                 }
