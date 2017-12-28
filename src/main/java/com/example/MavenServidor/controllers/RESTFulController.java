@@ -69,21 +69,18 @@ public class RESTFulController {
         try {
             List<Document> list = new ArrayList<>();
             MongoCollection<Document> collection = db.getCollection(dominio);
-            JSONParser jsonParser=new JSONParser();
-            JSONArray jsonArray = (JSONArray) jsonParser.parse(jsonObject);
+            ArrayList<BasicDBObject> jsonArray = (ArrayList<BasicDBObject>) JSON.parse(jsonObject);
             int cont = 0;
-            for(Object object:jsonArray){
+            for(BasicDBObject object:jsonArray){
                 System.out.println("EL OBJETO INSERTAR: "+object);
                 Document doc = Document.parse(object.toString());
                 list.add(doc);
-                //collection.insertOne(doc);
                 cont++;
             }
             collection.insertMany(list);
-            //Document doc = Document.parse(jsonObject);
-            resp.put("error", "objeto creado correctamente");
+            resp.put("error", "objeto cre ado correctamente");
             resp.put("insertados", cont);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             resp.put("error", e);
         }
@@ -95,7 +92,6 @@ public class RESTFulController {
         System.out.println("ENTRA A UPDATE");
         JSONObject resp = new JSONObject();
         Document doc = Document.parse(jsonObject);
-
 
         MongoCollection<Document>  collection = db.getCollection(dominio);
         String idElemento = doc.get("id").toString();
