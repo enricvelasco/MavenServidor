@@ -7,10 +7,7 @@ import com.mongodb.client.result.UpdateResult;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.bson.Document;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/menusPrincipales")
@@ -21,34 +18,39 @@ public class MenusPrincipalesController  extends RESTFulController {
     }
 
     @Override
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @CrossOrigin
+    @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public JSONArray list(String query) {
+    public JSONArray list(@RequestParam(value = "query", required = false) String query){
         return super.list(query);
     }
 
     @Override
+    @CrossOrigin
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
     @ResponseBody
-    public JSONObject read(String id) {
+    public JSONObject read(@PathVariable("id") String id) {
         return super.read(id);
     }
 
     @Override
+    @CrossOrigin
     @RequestMapping( value = "/", method = RequestMethod.POST )
-    public JSONObject create(String jsonObject) {
+    public JSONObject create(@RequestBody String jsonObject) {
         return super.create(jsonObject);
     }
 
     @Override
+    @CrossOrigin
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT )
-    public JSONObject update(String jsonObject) {
+    public JSONObject update(@RequestBody String jsonObject) {
         return super.update(jsonObject);
     }
 
     @Override
+    @CrossOrigin
     @RequestMapping( value = "/", method = RequestMethod.DELETE )
-    public String delete(String jsonObject) {
+    public String delete(@RequestBody String jsonObject) {
         return super.delete(jsonObject);
     }
 }

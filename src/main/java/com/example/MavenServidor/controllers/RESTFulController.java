@@ -30,12 +30,36 @@ public class RESTFulController {
     protected String dominio;
 
     @Transactional
+    public JSONArray list(){
+        //System.out.println("LA QUERY QUE LLEGA "+query);
+        MongoCollection<Document> collection = db.getCollection(dominio);
+
+        //FilterGenerate filter = new FilterGenerate(query);
+        //FindIterable<Document> resultDocument = (filter.getFiltroGenerado() == null) ?  collection.find() :  collection.find(filter.getFiltroGenerado());
+        /*FindIterable<Document> resultDocument = collection.find();
+        JSONArray list = new JSONArray();
+        for(Document doc : resultDocument) {
+            System.out.println("EL DOCUMENTO: "+doc.toJson());
+            JSONObject jsonObj = read(doc.get( "_id" ).toString());
+            list.add(jsonObj);
+        }
+        return list;*/
+        System.out.println("HOLA--------");
+        JSONArray a = new JSONArray();
+        return a;
+    }
+
+    @Transactional
     public JSONArray list(String query){
         System.out.println("LA QUERY QUE LLEGA "+query);
         MongoCollection<Document> collection = db.getCollection(dominio);
-
-        FilterGenerate filter = new FilterGenerate(query);
-        FindIterable<Document> resultDocument = (filter.getFiltroGenerado() == null) ?  collection.find() :  collection.find(filter.getFiltroGenerado());
+        FindIterable<Document> resultDocument = null;
+        if(query != null){
+            FilterGenerate filter = new FilterGenerate(query);
+            resultDocument = (filter.getFiltroGenerado() == null) ?  collection.find() :  collection.find(filter.getFiltroGenerado());
+        }else{
+            resultDocument = collection.find();
+        }
         JSONArray list = new JSONArray();
         for(Document doc : resultDocument) {
             System.out.println("EL DOCUMENTO: "+doc.toJson());
