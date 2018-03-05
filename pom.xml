@@ -58,11 +58,6 @@
             <artifactId>json-smart</artifactId>
             <version>RELEASE</version>
         </dependency>
-		<dependency>
-			<groupId>com.thetransactioncompany</groupId>
-			<artifactId>cors-filter</artifactId>
-			<!--version>[ version ]</version-->
-		</dependency>
     </dependencies>
 
 	<build>
