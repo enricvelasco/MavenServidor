@@ -1,6 +1,7 @@
 package com.example.MavenServidor.controllers;
 
 import Filter.FilterGenerate;
+import com.example.MavenServidor.services.GeneralService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -13,11 +14,8 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.print.Doc;
-
 import static com.example.MavenServidor.MavenServidorApplication.db;
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.in;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +23,7 @@ import java.util.Set;
 
 public class RESTFulController {
     protected String dominio;
+    private GeneralService generalService = new GeneralService();
 
     @Transactional
     public JSONArray list(String query){
@@ -38,38 +37,13 @@ public class RESTFulController {
             resultDocument = collection.find(new Document());
         }
         JSONArray list = new JSONArray();
-        //list = asignarIdsCorrectosString(list, resultDocument);
         for(Document doc : resultDocument) {
-            JSONObject obj = montarObjeto(doc);
+            JSONObject obj = generalService.montarObjeto(doc);
             list.add(obj);
-            /*JSONObject jsonObj = new JSONObject();
-            jsonObj.put("_id", doc.get("_id").toString();
-            System.out.println("ID RECORRE: ");
-            for(Object valor:doc.values()){
-                System.out.println("DENTRO DEL FOR "+ valor);
-                if(valor instanceof ArrayList){
-                    JSONArray sublist = new JSONArray();
-
-                }
-            }*/
-
-            //System.out.println("EL DOCUMENTO: "+doc.toJson());
-            //recorrer campos documento
-            //JSONObject jsonObj = recorrerObjetoDevolverIdsCorrectos(doc);
-            //JSONObject jsonObj = read(doc.get( "_id" ).toString());
-
-
-
-            //devolverTodosLosIdsString(jsonObj);
-
-
-            //devolverTodosLosIdsString(jsonObj);
-
-            //list.add(jsonObj);
         }
         return list;
     }
-
+/*
     private JSONObject montarObjeto(Document doc){
         JSONObject jsonObject = new JSONObject();
         Set<String> keys = doc.keySet();
@@ -77,93 +51,48 @@ public class RESTFulController {
             if (key.equals("_id")) {
                 jsonObject.put(key, doc.get(key).toString());
             } else {
-                //jsonObject.put(key, doc.get(key));
                 if(doc.get(key) instanceof ArrayList){
-                    JSONArray lista = new JSONArray();
-
-                    System.out.println("VA A RECURSIVO::: "+doc.get(key));
-
-                    JSONArray arrayValue = montarArrayJson(((ArrayList) doc.get(key)).toArray(), lista);
-
+                    JSONArray arrayValue = montarArrayJson(((ArrayList) doc.get(key)).toArray());
                     jsonObject.put(key, arrayValue);
                 }else{
                     jsonObject.put(key, doc.get(key));
                 }
-
             }
         }
-
         return jsonObject;
     }
 
-    private JSONArray montarArrayJson(Object[] obj, JSONArray lista) {
-        //System.out.println("OBJETO QUE ENTRA "+obj);
-        //JSONArray lista = new JSONArray();
-        JSONObject objCarga = new JSONObject();
-
+    private JSONArray montarArrayJson(Object[] obj) {
+        JSONArray lista = new JSONArray();
         for(Object val : obj){
-            //JSONObject objCarga = new JSONObject();
             Document object = (Document) val;
-            System.out.println("RECORRE: "+object);
-
-            Set<String> keys = object.keySet();
-            for(String key : keys){
-                if (key.equals("_id")) {
-                    objCarga.put(key, object.get(key).toString());
-                } else {
-                    if(object.get(key) instanceof ArrayList){
-                        System.out.println("CUANDO ES UN ARRAY::"+object.get(key));
-                        JSONArray arrayValue = montarArrayJson(((ArrayList) object.get(key)).toArray(), lista);
-                        System.out.println("RESPUESTA AÑADIR::"+arrayValue);
-                        //JSONObject qqq = montarObjeto(object);
-                        //System.out.println("EL QQQQ:: "+qqq);
-                        //objCarga.put(key, arrayValue);
-                        //System.out.println("EN ARRAY: "+arrayValue);
-                        //lista.add(arrayValue);
-                    }else{
-                        objCarga.put(key, object.get(key));
-                    }
-                }
-                //System.out.println("-----------AÑADE OBJETO: "+objCarga);
-            }
-            System.out.println("-----------AÑADE OBJETO: "+objCarga);
-            //lista.add(objCarga);
-
-            //lista.add(objCarga);
-            //System.out.println("LA LISTA: "+lista);
-            //return lista;
+            JSONObject resp = recorrerObjeto(object);
+            lista.add(resp);
         }
-        System.out.println("-------------------");
         return lista;
     }
 
-    private void devolverTodosLosIdsString(JSONObject jsonObj){
-        System.out.println("ENTRA A DEVOLVER ID"+ jsonObj.toString());
-    }
-
-    /*private JSONObject recorrerObjetoDevolverIdsCorrectos(Document doc) {
-        //Document jsonObj = Document.parse(doc.get( "_id" ).toString());
-        //doc.get("_id").to2String();
-        System.out.println("QUE ENTRA: "+ doc);
-        JSONObject jsonObj = read(doc);
-        for(Object valor:doc.values()){
-
-            if(valor instanceof ArrayList){
-                System.out.println("Tiene hijo "+ valor);
-                Iterator<Document> itDoc= ((ArrayList) valor).iterator();
-                while (itDoc.hasNext()){
-
-                    Document dc = itDoc.next();
-                    System.out.println("EL IT DOC "+dc.get("description"));
-                    //JSONObject sub = read(dc.get( "_id" ).toString());
-                    JSONObject sub = recorrerObjetoDevolverIdsCorrectos(dc);
+    private JSONObject recorrerObjeto(Document object){
+        JSONObject jsonRespuesta = new JSONObject();
+        Set<String> keys = object.keySet();
+        for(String key : keys) {
+            if (key.equals("_id")) {
+                jsonRespuesta.put(key, object.get(key).toString());
+            } else {
+                if (object.get(key) instanceof ArrayList) {
+                    JSONArray jsonArray = new JSONArray();
+                    ArrayList<Object> arr = (ArrayList<Object>) object.get(key);
+                    for(Object a : arr){
+                        JSONObject resp = recorrerObjeto((Document) a);
+                        jsonArray.add(resp);
+                    }
+                    jsonRespuesta.put(key, jsonArray);
+                } else {
+                    jsonRespuesta.put(key, object.get(key));
                 }
-
-                //Document dev = recorrerObjetoDevolverIdsCorrectos((Document) a);
-
             }
-         }
-        return jsonObj;
+        }
+        return jsonRespuesta;
     }*/
 
 
